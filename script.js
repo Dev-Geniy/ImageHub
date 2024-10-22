@@ -1,15 +1,18 @@
-const apiKey = '776322487f852a2b3752cd6e0a88e7ad'; // Ваш API-ключ Imgbb
+const apiKey = '776322487f852a2b3752cd6e0a88e7ad'; // Ваш API-ключ
 const imageInput = document.getElementById('imageInput');
 const infoButton = document.getElementById('infoButton');
 const infoModal = document.getElementById('infoModal');
 const closeModal = document.getElementById('closeModal');
 
-// URL веб-приложения Google Apps Script
+// Замените на URL вашего веб-приложения Google Apps Script
 const scriptUrl = 'https://script.google.com/macros/s/AKfycbw2wJqd17VEt0EaSK02W5_V2TP2lmpsm8R2t8BzWQKgVcMsqnEIdQ1ZYlVxZerKwrM/exec'; 
+
+// Добавляем прокси URL
+const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
 
 // Функция для обновления фона и отображения сохранённых ссылок
 function updateBackgroundAndLinks() {
-    fetch(scriptUrl + '?method=getImageLinks')
+    fetch(proxyUrl + scriptUrl + '?method=getImageLinks') // Используем прокси
         .then(response => response.json())
         .then(data => {
             const gallery = document.getElementById('gallery');
@@ -52,7 +55,7 @@ imageInput.addEventListener('change', function(event) {
             if (data.success) {
                 const imageUrl = data.data.display_url;
                 // Сохранение ссылки в Google Sheets
-                fetch(scriptUrl, {
+                fetch(proxyUrl + scriptUrl, { // Используем прокси
                     method: 'POST',
                     body: JSON.stringify({url: imageUrl}),
                     headers: {
@@ -71,7 +74,6 @@ imageInput.addEventListener('change', function(event) {
             }
         })
         .catch(error => console.error('Ошибка:', error));
-    }
 });
 
 // Показать всплывающее окно
