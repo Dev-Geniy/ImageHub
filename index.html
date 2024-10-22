@@ -1,0 +1,29 @@
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Загрузка изображения</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <label for="imageInput" id="uploadButton">Загрузить фото</label>
+    <input type="file" id="imageInput" accept="image/*">
+
+    <!-- Кнопка с иконкой информации -->
+    <div id="infoButton" class="circle-button">i</div>
+    <!-- Кнопка с иконкой Twitter -->
+    <a id="twitterButton" class="circle-button" href="https://x.com/HotDog850642" target="_blank">🐦</a>
+
+    <!-- Всплывающее окно с информацией -->
+    <div id="infoModal">
+        <h2>Как пользоваться сайтом</h2>
+        <p>Чтобы установить изображение в качестве фона, нажмите на кнопку "Загрузить фото" и выберите изображение на своем устройстве.</p>
+        <p>После успешной загрузки изображение автоматически станет фоном.</p>
+        <span id="closeModal">Закрыть</span>
+    </div>
+  <!-- Галерея загруженных изображений -->
+    <div id="gallery"></div>
+  
+    <script src="script.js"></script>
+</body>
+</html>

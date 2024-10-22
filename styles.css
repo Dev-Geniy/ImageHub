@@ -1,0 +1,81 @@
+body {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start; /* Изменено для выравнивания по верхней части */
+    height: 100vh;
+    background-size: cover;
+    background-position: center;
+    transition: background 0.5s ease-in-out;
+    position: relative; /* Добавлено для позиционирования кнопок */
+}
+
+#uploadButton {
+    padding: 10px 20px;
+    font-size: 18px;
+    cursor: pointer;
+    background-color: rgba(0, 0, 0, 0.5); /* Полупрозрачный тёмный цвет */
+    color: white;
+    border: 2px dashed white; /* Прерывистый белый контур */
+    border-radius: 5px;
+    margin: 20px; /* Отступ сверху для кнопки */
+    z-index: 1; /* Чтобы кнопка была выше других элементов */
+}
+
+.circle-button {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: rgba(0, 0, 0, 0.5); /* Полупрозрачный фон */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 2px dashed white; /* Прерывистая граница */
+    position: absolute;
+    z-index: 2; /* Кнопки выше остальных элементов */
+    cursor: pointer;
+}
+
+#infoButton {
+    top: 20px;
+    right: 70px; /* Расположение кнопки информации */
+}
+
+#twitterButton {
+    top: 20px;
+    right: 20px; /* Расположение кнопки Twitter */
+}
+
+/* Стиль для всплывающего окна */
+#infoModal {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 3; /* Чтобы модальное окно было выше остальных элементов */
+}
+
+#closeModal {
+    cursor: pointer;
+    color: red;
+    font-weight: bold;
+}
+#imageInput {
+    display: none; /* Скрываем элемент input */
+}
+
+#gallery {
+    display: flex;
+    flex-wrap: wrap; /* Позволяет изображениям переходить на следующую строку */
+    margin-top: 20px; /* Отступ сверху */
+}
+
+#gallery img {
+    border: 2px dashed white; /* Прерывистая граница для изображений */
+}
