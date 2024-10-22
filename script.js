@@ -1,18 +1,14 @@
-const apiKey = '776322487f852a2b3752cd6e0a88e7ad'; // Ваш API-ключ
+const apiKey = '776322487f852a2b3752cd6e0a88e7ad';
 const imageInput = document.getElementById('imageInput');
 const infoButton = document.getElementById('infoButton');
 const infoModal = document.getElementById('infoModal');
 const closeModal = document.getElementById('closeModal');
+const loadingAnimation = document.getElementById('loadingAnimation');
 
-// Замените на URL вашего веб-приложения Google Apps Script
-const scriptUrl = 'https://script.google.com/macros/s/AKfycbw2wJqd17VEt0EaSK02W5_V2TP2lmpsm8R2t8BzWQKgVcMsqnEIdQ1ZYlVxZerKwrM/exec'; 
+const scriptUrl = 'https://script.google.com/macros/s/AKfycbyBOtLg1HnGNBtsA27ObRThmX1uKQFIJEjiQNURutTgnFdKJ3P2QsHB7ehW91u_6Cw/exec';
 
-// Добавляем прокси URL
-const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
-
-// Функция для обновления фона и отображения сохранённых ссылок
 function updateBackgroundAndLinks() {
-    fetch(proxyUrl + scriptUrl + '?method=getImageLinks') // Используем прокси
+    fetch(scriptUrl + '?method=getImageLinks')
         .then(response => response.json())
         .then(data => {
             const gallery = document.getElementById('gallery');
@@ -22,15 +18,15 @@ function updateBackgroundAndLinks() {
                 const imgElement = document.createElement('img');
                 imgElement.src = imageUrl;
                 imgElement.alt = 'Загруженное изображение';
-                imgElement.style.width = '100px'; // Ширина изображения в галерее
-                imgElement.style.height = 'auto'; // Автоматическая высота
-                imgElement.style.margin = '5px'; // Отступы между изображениями
+                imgElement.style.width = '100px';
+                imgElement.style.height = 'auto';
+                imgElement.style.margin = '5px';
 
                 gallery.appendChild(imgElement); // Добавление изображения в галерею
             });
 
             if (data.length > 0) {
-                const latestImageUrl = data[data.length - 1]; // Самая последняя сохраненная ссылка
+                const latestImageUrl = data[data.length - 1];
                 document.body.style.backgroundImage = `url(${latestImageUrl})`;
             }
         })
@@ -39,12 +35,14 @@ function updateBackgroundAndLinks() {
         });
 }
 
-// Событие изменения загрузки изображения
 imageInput.addEventListener('change', function(event) {
     const file = event.target.files[0];
     if (file) {
         const formData = new FormData();
         formData.append('image', file);
+
+        // Показать анимацию загрузки
+        loadingAnimation.style.display = 'flex';
 
         fetch(`https://api.imgbb.com/1/upload?key=${apiKey}`, {
             method: 'POST',
@@ -55,7 +53,7 @@ imageInput.addEventListener('change', function(event) {
             if (data.success) {
                 const imageUrl = data.data.display_url;
                 // Сохранение ссылки в Google Sheets
-                fetch(proxyUrl + scriptUrl, { // Используем прокси
+                fetch(scriptUrl, {
                     method: 'POST',
                     body: JSON.stringify({url: imageUrl}),
                     headers: {
@@ -64,6 +62,11 @@ imageInput.addEventListener('change', function(event) {
                 })
                 .then(() => {
                     console.log("Ссылка успешно сохранена в Google Sheets!");
+                    loadingAnimation.classList.add('complete'); // Установить класс для галочки
+                    setTimeout(() => {
+                        loadingAnimation.style.display = 'none'; // Скрыть анимацию загрузки
+                        loadingAnimation.classList.remove('complete'); // Удалить класс для галочки
+                    }, 1500); // Время отображения галочки
                     updateBackgroundAndLinks(); // Обновление фона и сохранённых ссылок
                 })
                 .catch((error) => {
@@ -74,6 +77,11 @@ imageInput.addEventListener('change', function(event) {
             }
         })
         .catch(error => console.error('Ошибка:', error));
+    }
+
+    // Анимация кнопки загрузки
+    const uploadButton = document.getElementById('uploadButton');
+    uploadButton.style.animation = 'buttonAnimation 0.5s forwards';
 });
 
 // Показать всплывающее окно
